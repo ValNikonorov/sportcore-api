@@ -75,6 +75,8 @@ def get_all_players(
         position: str | None = None,
         limit: int = 4,
         offset: int = 0,
+        sort_by: str | None = None,
+        order: str = "asc",
         search: str | None = None,
 ):
     query = session.query(Player)
@@ -95,6 +97,21 @@ def get_all_players(
                 Player.last_name.ilike(search_pattern),
             )
         )
+
+    allowed_sort_fields = {
+        "first_name": Player.first_name,
+        "last_name": Player.last_name,
+        "weight": Player.weight,
+        "birth_date": Player.birth_date,
+    }
+
+    if sort_by is not None:
+        if sort_by in allowed_sort_fields:
+            sort_column = allowed_sort_fields[sort_by]
+            if order == "desc":
+                query = query.order_by(sort_column.desc())
+            else:
+                query = query.order_by(sort_column.asc())
 
     query = query.limit(limit).offset(offset)
 

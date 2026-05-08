@@ -17,6 +17,8 @@ def get_players(
     team_id: int | None = None,
     position: str | None = None,
     search: str | None = None,
+    sort_by: str | None = None,
+    order: str = "asc",
     limit: int = 4,
     offset: int = 0,
     db: Session = Depends(get_db)
@@ -26,6 +28,8 @@ def get_players(
         team_id=team_id,
         position=position,
         search=search,
+        sort_by=sort_by,
+        order=order,
         limit=limit,
         offset=offset,
     )
