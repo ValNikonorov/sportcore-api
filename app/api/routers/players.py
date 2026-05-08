@@ -13,7 +13,7 @@ router = APIRouter(prefix="/players", tags=["players"])
 
 
 @router.get("/", response_model=PlayersListResponse)
-def get_players(
+def get_players_endpoint(
     team_id: int | None = None,
     position: str | None = None,
     search: str | None = None,
@@ -33,6 +33,16 @@ def get_players(
         limit=limit,
         offset=offset,
     )
+
+    allowed_sort_values = {"first_name", "last_name", "weight", "birth_date"}
+    allowed_order_values = {"asc", "desc"}
+
+    if sort_by is not None and sort_by not in allowed_sort_values:
+        raise HTTPException(status_code=400, detail="Invalid sort field")
+
+    if order not in allowed_order_values:
+        raise HTTPException(status_code=400, detail="Invalid sort order")
+
     return players
 
 
