@@ -27,3 +27,14 @@ class PlayerResponse(BaseModel):
 class PlayersListResponse(BaseModel):
     total: int
     items: list[PlayerResponse]
+
+
+class TeamCreate(BaseModel):
+    name: str = Field(min_length=1)
+    city: str = Field(min_length=1)
+
+
+class TeamResponse(BaseModel):
+    id: int
+    name: str
+    city: str

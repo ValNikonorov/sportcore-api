@@ -2,7 +2,7 @@ from datetime import date
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
 
-from app.models.player import Player
+from app.models.players import Player
 
 
 def get_player_by_identity_fields(
@@ -30,8 +30,8 @@ def create_player(
         last_name: str,
         birth_date: date,
         team_id: int,
-        position: str | None = None,
-        weight: float | None = None):
+        weight: float | None = None,
+        position: str | None = None):
     existing = get_player_by_identity_fields(
         session=session,
         first_name=first_name,

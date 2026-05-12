@@ -1,9 +1,7 @@
 from datetime import date
-from app.db import engine, Base, SessionLocal
+from app.db import SessionLocal
 from app.services.player_service import create_player, get_player, delete_player, update_player_weight, get_all_players
 
-
-Base.metadata.create_all(bind=engine)
 
 session = SessionLocal()
 
@@ -44,15 +42,15 @@ if found_player:
 else:
     print("Player not found")
 
-# deleted_player = delete_player(
-#     session, first_name, last_name, birth_date, team_id,)
+deleted_player = delete_player(
+    session, first_name, last_name, birth_date, team_id,)
 
 
-# if player:
-#     print(
-#         f"Player {deleted_player.first_name} {deleted_player.last_name} was deleted")
-# else:
-#     print("Player not found")
+if player:
+    print(
+        f"Player {deleted_player.first_name} {deleted_player.last_name} was deleted")
+else:
+    print("Player not found")
 
 updated_player = update_player_weight(
     session, first_name, last_name, birth_date, team_id, weight)
