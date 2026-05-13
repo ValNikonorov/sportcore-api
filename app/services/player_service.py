@@ -2,7 +2,7 @@ from datetime import date
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
 
-from app.models.players import Player
+from app.models.player import Player
 
 
 def get_player_by_identity_fields(

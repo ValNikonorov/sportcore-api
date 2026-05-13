@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Response, HTTPException, Depends
 
-from app.api.schemas import TeamCreate, TeamResponse
+from app.api.schemas import TeamCreate, TeamResponse, TeamPlayersResponse
 from app.db import get_db
 
-from app.services.team_service import create_team, get_all_teams, serialize_team
-
+from app.services.team_service import create_team, get_all_teams, serialize_team, get_team_by_id
+from app.services.player_service import serialize_player
 from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/teams", tags=["teams"])
@@ -25,3 +25,19 @@ def create_team_endpoint(team: TeamCreate, db: Session = Depends(get_db)):
     )
 
     return serialize_team(new_team)
+
+
+@router.get("/{team_id}/players", response_model=TeamPlayersResponse)
+def get_players_by_team_id_endpoint(team_id: int, db: Session = Depends(get_db)):
+
+    team = get_team_by_id(db, team_id)
+    if not team:
+        raise HTTPException(status_code=404, detail="Team not found")
+    return {
+        "team_id": team.id,
+        "team_name": team.name,
+        "players": [
+            serialize_player(player)
+            for player in team.players
+        ]
+    }

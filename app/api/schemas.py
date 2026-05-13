@@ -38,3 +38,9 @@ class TeamResponse(BaseModel):
     id: int
     name: str
     city: str
+
+
+class TeamPlayersResponse(BaseModel):
+    team_id: int
+    team_name: str
+    players: list[PlayerResponse]

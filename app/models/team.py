@@ -1,4 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.orm import relationship
+
 from datetime import datetime
 
 from app.db import Base
@@ -14,3 +16,5 @@ class Team(Base):
     city = Column(String, nullable=False)
 
     created_at = Column(DateTime, default=datetime.utcnow)
+
+    players = relationship("Player", back_populates="team")

@@ -58,3 +58,10 @@ def get_all_teams(
     teams = query.all()
 
     return [serialize_team(team) for team in teams]
+
+
+def get_team_by_id(
+        session: Session,
+        team_id: int
+):
+    return session.query(Team).filter(Team.id == team_id).first()
