@@ -65,3 +65,16 @@ def get_team_by_id(
         team_id: int
 ):
     return session.query(Team).filter(Team.id == team_id).first()
+
+
+def delete_team_by_id(session, team_id):
+    team = get_team_by_id(session, team_id)
+    if not team:
+        return None
+
+    if team.players:
+        return False
+
+    session.delete(team)
+    session.commit()
+    return team

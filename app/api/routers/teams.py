@@ -3,7 +3,7 @@ from fastapi import APIRouter, Response, HTTPException, Depends
 from app.api.schemas import TeamCreate, TeamResponse, TeamPlayersResponse
 from app.db import get_db
 
-from app.services.team_service import create_team, get_all_teams, serialize_team, get_team_by_id
+from app.services.team_service import create_team, get_all_teams, serialize_team, get_team_by_id, delete_team_by_id
 from app.services.player_service import serialize_player
 from sqlalchemy.orm import Session
 
@@ -41,3 +41,20 @@ def get_players_by_team_id_endpoint(team_id: int, db: Session = Depends(get_db))
             for player in team.players
         ]
     }
+
+
+@router.delete("/{team_id}")
+def delete_team_by_id_endpoint(team_id: int, db: Session = Depends(get_db)):
+    deleted_team = delete_team_by_id(
+        session=db,
+        team_id=team_id
+    )
+
+    if deleted_team is None:
+        raise HTTPException(status_code=404, detail="Team not found")
+
+    if deleted_team is False:
+        raise HTTPException(
+            status_code=400, detail="Cannot delete team with players")
+
+    return Response(status_code=204)
