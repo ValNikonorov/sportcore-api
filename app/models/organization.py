@@ -18,3 +18,5 @@ class Organization(Base):
     organization_type = Column(String, nullable=False)
 
     created_at = Column(DateTime, default=datetime.utcnow)
+
+    teams = relationship("Team", back_populates="organization")

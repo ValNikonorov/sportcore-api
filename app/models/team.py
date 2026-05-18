@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
 from datetime import datetime
@@ -15,6 +15,10 @@ class Team(Base):
     name = Column(String, nullable=False)
     city = Column(String, nullable=False)
 
+    organization_id = Column(ForeignKey("organizations.id"), nullable=False)
+
     created_at = Column(DateTime, default=datetime.utcnow)
 
     players = relationship("Player", back_populates="team")
+
+    organization = relationship("Organization", back_populates="teams")
