@@ -44,3 +44,23 @@ class TeamPlayersResponse(BaseModel):
     team_id: int
     team_name: str
     players: list[PlayerResponse]
+
+
+class OrganizationCreate(BaseModel):
+    name: str = Field(min_length=1)
+    city: str = Field(min_length=1)
+    organization_type: str = Field(min_length=1)
+
+
+class OrganizationResponse(BaseModel):
+    id: int
+    name: str
+    city: str
+    organization_type: str
+
+
+class OrganizationTeamsResponse(BaseModel):
+    organization_id: int
+    organization_name: str
+    organization_type: str
+    teams: list[TeamResponse]
