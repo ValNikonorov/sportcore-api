@@ -40,6 +40,7 @@ def get_teams_by_organization_id_endpoint(organization_id: int, db: Session = De
         "organization_id": organization.id,
         "organization_name": organization.name,
         "organization_type": organization.organization_type,
+        "city": organization.city,
         "teams": [
             serialize_team(team)
             for team in organization.teams

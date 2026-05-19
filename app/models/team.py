@@ -13,7 +13,10 @@ class Team(Base):
     id = Column(Integer, primary_key=True)
 
     name = Column(String, nullable=False)
-    city = Column(String, nullable=False)
+    city = Column(String, nullable=True)
+    gender = Column(String, nullable=True)
+    age_group = Column(String, nullable=True)
+    level = Column(String, nullable=True)
 
     organization_id = Column(ForeignKey("organizations.id"), nullable=False)
 

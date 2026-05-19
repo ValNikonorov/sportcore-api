@@ -31,13 +31,23 @@ class PlayersListResponse(BaseModel):
 
 class TeamCreate(BaseModel):
     name: str = Field(min_length=1)
-    city: str = Field(min_length=1)
+    organization_id: int
+    gender: str
+    age_group: str | None = None
+    level: str | None = None
+    city: str | None = None
+    gender: str | None = None
 
 
 class TeamResponse(BaseModel):
     id: int
     name: str
-    city: str
+    city: str | None = None
+    gender: str
+    organization_id: int
+    organization_name: str
+    age_group: str | None = None
+    level: str | None = None
 
 
 class TeamPlayersResponse(BaseModel):
@@ -63,4 +73,5 @@ class OrganizationTeamsResponse(BaseModel):
     organization_id: int
     organization_name: str
     organization_type: str
+    city: str
     teams: list[TeamResponse]

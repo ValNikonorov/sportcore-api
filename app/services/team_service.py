@@ -7,13 +7,13 @@ from app.models.team import Team
 def get_team_by_identity_fields(
     session: Session,
     name: str,
-    city: str
+    organization_id: int
 ):
     return (
         session.query(Team)
         .filter_by(
             name=name,
-            city=city
+            organization_id=organization_id
         )
         .first()
     )
@@ -24,25 +24,39 @@ def serialize_team(team: Team):
         "id": team.id,
         "name": team.name,
         "city": team.city,
+        "gender": team.gender,
+        "organization_id": team.organization_id,
+        "organization_name": team.organization.name if team.organization else None,
+        "age_group": team.age_group,
+        "level": team.level
     }
 
 
 def create_team(
     session: Session,
     name: str,
-    city: str
+    city: str,
+    age_group: str,
+    level: str,
+    organization_id: int,
+    gender: str
 ):
     existing = get_team_by_identity_fields(
         session=session,
         name=name,
-        city=city
+        organization_id=organization_id
     )
+
     if existing:
         return existing
     else:
         new_team = Team(
             name=name,
-            city=city
+            city=city,
+            age_group=age_group,
+            level=level,
+            organization_id=organization_id,
+            gender=gender
         )
         session.add(new_team)
         session.commit()

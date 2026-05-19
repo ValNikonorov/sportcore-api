@@ -21,7 +21,11 @@ def create_team_endpoint(team: TeamCreate, db: Session = Depends(get_db)):
     new_team = create_team(
         session=db,
         name=team.name,
-        city=team.city
+        city=team.city,
+        organization_id=team.organization_id,
+        age_group=team.age_group,
+        level=team.level,
+        gender=team.gender
     )
 
     return serialize_team(new_team)
@@ -34,6 +38,7 @@ def get_players_by_team_id_endpoint(team_id: int, db: Session = Depends(get_db))
     if not team:
         raise HTTPException(status_code=404, detail="Team not found")
     return {
+        "organization_id": team.organization_id,
         "team_id": team.id,
         "team_name": team.name,
         "players": [
