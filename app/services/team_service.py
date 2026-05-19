@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 
 from app.models.team import Team
+from app.services.organization_service import get_organization_by_id
 
 
 def get_team_by_identity_fields(
@@ -41,6 +42,11 @@ def create_team(
     organization_id: int,
     gender: str
 ):
+    organization = get_organization_by_id(session, organization_id)
+
+    if not organization:
+        return False
+
     existing = get_team_by_identity_fields(
         session=session,
         name=name,
@@ -58,6 +64,7 @@ def create_team(
             organization_id=organization_id,
             gender=gender
         )
+
         session.add(new_team)
         session.commit()
         session.refresh(new_team)

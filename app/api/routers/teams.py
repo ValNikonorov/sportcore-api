@@ -27,6 +27,8 @@ def create_team_endpoint(team: TeamCreate, db: Session = Depends(get_db)):
         level=team.level,
         gender=team.gender
     )
+    if new_team is False:
+        raise HTTPException(status_code=404, detail="Organization not found")
 
     return serialize_team(new_team)
 
