@@ -75,3 +75,11 @@ class OrganizationTeamsResponse(BaseModel):
     organization_type: str
     city: str
     teams: list[TeamResponse]
+
+
+class OrganizationPlayersResponse(BaseModel):
+    organization_id: int
+    organization_name: str
+    organization_type: str
+    city: str
+    players: list[PlayerResponse]

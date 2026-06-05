@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Response, HTTPException, Depends
 
-from app.api.schemas import OrganizationCreate, OrganizationResponse, OrganizationTeamsResponse
+from app.api.schemas import OrganizationCreate, OrganizationResponse, OrganizationTeamsResponse, OrganizationPlayersResponse
 
 from app.db import get_db
 
-from app.services.organization_service import create_organization, get_all_organizations, serialize_organization, get_organization_by_id
+from app.services.organization_service import create_organization, get_all_organizations, serialize_organization, get_organization_by_id, get_organization_players
 
 from app.services.team_service import serialize_team
+
 
 from sqlalchemy.orm import Session
 
@@ -46,3 +47,13 @@ def get_teams_by_organization_id_endpoint(organization_id: int, db: Session = De
             for team in organization.teams
         ]
     }
+
+
+@router.get("/{organization_id}/players", response_model=OrganizationPlayersResponse)
+def get_players_by_organization_id_endpoint(organization_id: int, db: Session = Depends(get_db)):
+    result = get_organization_players(db, organization_id)
+
+    if result is None:
+        raise HTTPException(status_code=404, detail="Organization not found")
+
+    return result

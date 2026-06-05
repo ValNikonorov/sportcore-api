@@ -2,6 +2,8 @@ from sqlalchemy.orm import Session
 
 from app.models.organization import Organization
 
+from app.services.player_service import serialize_player
+
 
 def get_organization_by_identify_fields(
         session: Session,
@@ -75,3 +77,26 @@ def get_organization_by_id(
 
 def delete_organization_by_id(session, organization_id):
     pass
+
+
+def get_organization_players(session: Session, organization_id: int):
+    organization = get_organization_by_id(session, organization_id)
+
+    if not organization:
+        return None
+
+    players = []
+
+    for team in organization.teams:
+        players.extend(team.players)
+
+    return {
+        "organization_id": organization.id,
+        "organization_name": organization.name,
+        "organization_type": organization.organization_type,
+        "city": organization.city,
+        "players": [
+            serialize_player(player)
+            for player in players
+        ]
+    }
