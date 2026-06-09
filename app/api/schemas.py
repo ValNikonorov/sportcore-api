@@ -29,6 +29,19 @@ class PlayersListResponse(BaseModel):
     items: list[PlayerResponse]
 
 
+class PlayerDetailResponse(BaseModel):
+    id: int
+    first_name: str
+    last_name: str
+    birth_date: str
+    position: str | None = None
+    weight: float | None = None
+    team_id: int
+    team_name: str | None = None
+    organization_id: int | None = None
+    organization_name: str | None = None
+
+
 class TeamCreate(BaseModel):
     name: str = Field(min_length=1)
     organization_id: int
