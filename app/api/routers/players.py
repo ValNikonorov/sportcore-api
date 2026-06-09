@@ -2,10 +2,10 @@ from datetime import date
 
 from fastapi import APIRouter, Response, HTTPException, Depends
 
-from app.api.schemas import PlayerCreate, PlayerWeightUpdate, PlayerResponse, PlayersListResponse
+from app.api.schemas import PlayerCreate, PlayerWeightUpdate, PlayerResponse, PlayersListResponse, PlayerDetailResponse
 from app.db import get_db
 
-from app.services.player_service import create_player, get_all_players, get_player_by_id, serialize_player, update_player_weight_by_id, delete_player_by_id
+from app.services.player_service import create_player, get_all_players, get_player_by_id, serialize_player, serialize_player_detail, update_player_weight_by_id, delete_player_by_id
 
 from sqlalchemy.orm import Session
 
@@ -62,13 +62,13 @@ def create_player_endpoint(player: PlayerCreate, db: Session = Depends(get_db)):
     return serialize_player(new_player)
 
 
-@router.get("/{player_id}", response_model=PlayerResponse)
+@router.get("/{player_id}", response_model=PlayerDetailResponse)
 def get_player_by_id_endpoint(player_id: int, db: Session = Depends(get_db)):
 
     found_player_by_id = get_player_by_id(db, player_id)
     if not found_player_by_id:
         raise HTTPException(status_code=404, detail="Player not found")
-    return serialize_player(found_player_by_id)
+    return serialize_player_detail(found_player_by_id)
 
 
 @router.patch("/{player_id}/weight", response_model=PlayerResponse)

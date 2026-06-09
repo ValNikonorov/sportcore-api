@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import or_
 
 from app.models.player import Player
+from app.models.team import Team
+from app.models.organization import Organization
 
 
 def get_player_by_identity_fields(
@@ -66,6 +68,25 @@ def serialize_player(player: Player) -> dict:
         "team_id": player.team_id,
         "weight": player.weight,
         "position": player.position
+    }
+
+
+def serialize_player_detail(player: Player) -> dict:
+    return {
+        "id": player.id,
+        "first_name": player.first_name,
+        "last_name": player.last_name,
+        "birth_date": str(player.birth_date),
+        "weight": player.weight,
+        "position": player.position,
+        "team_id": player.team_id,
+        "team_name": player.team.name if player.team else None,
+        "organization_id": player.team.organization_id if player.team else None,
+        "organization_name":  (
+            player.team.organization.name
+            if player.team and player.team.organization
+            else None
+        )
     }
 
 
