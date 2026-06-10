@@ -20,6 +20,7 @@ class Player(Base):
 
     position = Column(String, nullable=True)
     weight = Column(Float, nullable=True)
+    height = Column(Float, nullable=True)
 
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)

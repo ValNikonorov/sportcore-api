@@ -7,6 +7,7 @@ class PlayerCreate(BaseModel):
     birth_date: str
     team_id: int = Field(gt=0)
     weight: float = Field(gt=0)
+    height: float = Field(gt=0)
     position: str | None = None
 
 
@@ -21,6 +22,7 @@ class PlayerResponse(BaseModel):
     birth_date: str
     team_id: int
     weight: float | None = None
+    height: float | None = None
     position: str | None = None
 
 
@@ -36,6 +38,7 @@ class PlayerDetailResponse(BaseModel):
     birth_date: str
     position: str | None = None
     weight: float | None = None
+    height: float | None = None
     team_id: int
     team_name: str | None = None
     organization_id: int | None = None
