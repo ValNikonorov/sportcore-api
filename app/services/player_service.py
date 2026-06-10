@@ -67,6 +67,7 @@ def serialize_player(player: Player) -> dict:
         "birth_date": str(player.birth_date),
         "team_id": player.team_id,
         "weight": player.weight,
+        "height": player.height,
         "position": player.position
     }
 
@@ -78,6 +79,7 @@ def serialize_player_detail(player: Player) -> dict:
         "last_name": player.last_name,
         "birth_date": str(player.birth_date),
         "weight": player.weight,
+        "height": player.height,
         "position": player.position,
         "team_id": player.team_id,
         "team_name": player.team.name if player.team else None,
