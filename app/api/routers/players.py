@@ -57,6 +57,7 @@ def create_player_endpoint(player: PlayerCreate, db: Session = Depends(get_db)):
         team_id=player.team_id,
         position=player.position,
         weight=player.weight,
+        height=player.height
     )
 
     return serialize_player(new_player)
