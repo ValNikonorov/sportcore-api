@@ -33,6 +33,7 @@ def create_player(
         birth_date: date,
         team_id: int,
         weight: float | None = None,
+        height: float | None = None,
         position: str | None = None):
     existing = get_player_by_identity_fields(
         session=session,
@@ -51,6 +52,7 @@ def create_player(
             birth_date=birth_date,
             team_id=team_id,
             weight=weight,
+            height=height,
             position=position
         )
         session.add(new_player)
