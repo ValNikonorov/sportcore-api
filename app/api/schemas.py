@@ -19,6 +19,10 @@ class PlayerHeightUpdate(BaseModel):
     height: float = Field(gt=0)
 
 
+class PlayerTeamUpdate(BaseModel):
+    team_id: int = Field(gt=0)
+
+
 class PlayerResponse(BaseModel):
     id: int
     first_name: str

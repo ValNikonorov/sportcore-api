@@ -4,7 +4,6 @@ from sqlalchemy import or_
 
 from app.models.player import Player
 from app.models.team import Team
-from app.models.organization import Organization
 
 
 def get_player_by_identity_fields(
@@ -180,6 +179,24 @@ def update_player_height_by_id(
         return None
     player.height = height
     session.commit()
+
+    return player
+
+
+def update_player_team_by_id(
+    session: Session,
+    player_id: int,
+    team_id: int,
+):
+    player = get_player_by_id(session, player_id)
+    if not player:
+        return None
+    team = session.query(Team).filter(Team.id == team_id).first()
+    if not team:
+        return False
+    player.team_id = team_id
+    session.commit()
+    session.refresh(player)
 
     return player
 
