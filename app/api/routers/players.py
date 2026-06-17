@@ -2,10 +2,10 @@ from datetime import date
 
 from fastapi import APIRouter, Response, HTTPException, Depends
 
-from app.api.schemas import PlayerCreate, PlayerWeightUpdate, PlayerHeightUpdate, PlayerResponse, PlayersListResponse, PlayerDetailResponse
+from app.api.schemas import PlayerCreate, PlayerWeightUpdate, PlayerHeightUpdate, PlayerResponse, PlayersListResponse, PlayerDetailResponse, PlayerTeamUpdate
 from app.db import get_db
 
-from app.services.player_service import create_player, get_all_players, get_player_by_id, serialize_player, serialize_player_detail, update_player_weight_by_id, update_player_height_by_id, delete_player_by_id
+from app.services.player_service import create_player, get_all_players, get_player_by_id, serialize_player, serialize_player_detail, update_player_weight_by_id, update_player_height_by_id, update_player_team_by_id, delete_player_by_id
 
 from sqlalchemy.orm import Session
 
@@ -99,6 +99,23 @@ def update_player_height_endpoint(player_id: int, data: PlayerHeightUpdate, db: 
         raise HTTPException(status_code=404, detail="Player not found")
 
     return serialize_player(updated_player)
+
+
+@router.patch("/{player_id}/team", response_model=PlayerDetailResponse)
+def update_team_player_endpoint(player_id: int, data: PlayerTeamUpdate, db: Session = Depends(get_db)):
+
+    updated_player = update_player_team_by_id(
+        session=db,
+        player_id=player_id,
+        team_id=data.team_id,
+    )
+    if updated_player is None:
+        raise HTTPException(status_code=404, detail="Player not found")
+
+    if updated_player is False:
+        raise HTTPException(status_code=404, detail="Team not found")
+
+    return serialize_player_detail(updated_player)
 
 
 @router.delete("/{player_id}")
