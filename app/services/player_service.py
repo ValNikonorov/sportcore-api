@@ -170,6 +170,20 @@ def update_player_weight_by_id(
     return player
 
 
+def update_player_height_by_id(
+        session: Session,
+        player_id: int,
+        height: float,
+):
+    player = get_player_by_id(session, player_id)
+    if not player:
+        return None
+    player.height = height
+    session.commit()
+
+    return player
+
+
 def delete_player_by_id(session, player_id):
     player = get_player_by_id(session, player_id)
     if not player:

@@ -2,10 +2,10 @@ from datetime import date
 
 from fastapi import APIRouter, Response, HTTPException, Depends
 
-from app.api.schemas import PlayerCreate, PlayerWeightUpdate, PlayerResponse, PlayersListResponse, PlayerDetailResponse
+from app.api.schemas import PlayerCreate, PlayerWeightUpdate, PlayerHeightUpdate, PlayerResponse, PlayersListResponse, PlayerDetailResponse
 from app.db import get_db
 
-from app.services.player_service import create_player, get_all_players, get_player_by_id, serialize_player, serialize_player_detail, update_player_weight_by_id, delete_player_by_id
+from app.services.player_service import create_player, get_all_players, get_player_by_id, serialize_player, serialize_player_detail, update_player_weight_by_id, update_player_height_by_id, delete_player_by_id
 
 from sqlalchemy.orm import Session
 
@@ -79,6 +79,20 @@ def update_player_weight_endpoint(player_id: int, data: PlayerWeightUpdate, db: 
         session=db,
         player_id=player_id,
         weight=data.weight,
+    )
+
+    if not updated_player:
+        raise HTTPException(status_code=404, detail="Player not found")
+
+    return serialize_player(updated_player)
+
+
+@router.patch("/{player_id}/height", response_model=PlayerResponse)
+def update_player_height_endpoint(player_id: int, data: PlayerHeightUpdate, db: Session = Depends(get_db)):
+    updated_player = update_player_height_by_id(
+        session=db,
+        player_id=player_id,
+        height=data.height,
     )
 
     if not updated_player:
