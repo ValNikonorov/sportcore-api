@@ -25,3 +25,5 @@ class Team(Base):
     players = relationship("Player", back_populates="team")
 
     organization = relationship("Organization", back_populates="teams")
+
+    trainings = relationship("Training", back_populates="team")
