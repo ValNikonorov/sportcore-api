@@ -127,3 +127,9 @@ class TrainingResponse(BaseModel):
     location: str | None = None
     start_time: datetime
     end_time: datetime
+
+
+class TeamTrainingsResponse(BaseModel):
+    team_id: int
+    team_name: str
+    trainings: list[TrainingResponse]

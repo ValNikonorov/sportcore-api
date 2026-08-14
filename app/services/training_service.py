@@ -83,6 +83,21 @@ def get_all_trainings(
     return [serialize_training(training) for training in trainings]
 
 
+def get_team_trainings(
+    session: Session,
+    team_id: int,
+):
+    team = session.query(Team).filter(Team.id == team_id).first()
+
+    if not team:
+        return None
+
+    trainings = session.query(Training).join(Training.teams).filter(
+        Team.id == team_id).order_by(Training.start_time).all()
+
+    return team, trainings
+
+
 def serialize_training(training: Training):
     return {
         "id": training.id,
