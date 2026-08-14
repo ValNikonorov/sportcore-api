@@ -1,3 +1,4 @@
+from app.models.training import Training
 from app.models.organization import Organization
 from app.models.team import Team
 from app.models.player import Player
