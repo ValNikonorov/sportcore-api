@@ -3,6 +3,8 @@ from sqlalchemy.orm import relationship
 
 from datetime import datetime
 
+from app.models.training import training_teams
+
 from app.db import Base
 
 
@@ -26,4 +28,8 @@ class Team(Base):
 
     organization = relationship("Organization", back_populates="teams")
 
-    trainings = relationship("Training", back_populates="team")
+    trainings = relationship(
+        "Training",
+        secondary=training_teams,
+        back_populates="teams",
+    )

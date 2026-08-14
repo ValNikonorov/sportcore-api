@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from datetime import datetime
 
 
 class PlayerCreate(BaseModel):
@@ -56,7 +57,6 @@ class PlayerDetailResponse(BaseModel):
 class TeamCreate(BaseModel):
     name: str = Field(min_length=1)
     organization_id: int
-    gender: str
     age_group: str | None = None
     level: str | None = None
     city: str | None = None
@@ -66,12 +66,12 @@ class TeamCreate(BaseModel):
 class TeamResponse(BaseModel):
     id: int
     name: str
-    city: str | None = None
-    gender: str
     organization_id: int
     organization_name: str
     age_group: str | None = None
     level: str | None = None
+    city: str | None = None
+    gender: str | None = None
 
 
 class TeamPlayersResponse(BaseModel):
@@ -107,3 +107,23 @@ class OrganizationPlayersResponse(BaseModel):
     organization_type: str
     city: str
     players: list[PlayerResponse]
+
+
+class TrainingCreate(BaseModel):
+    team_ids: list[int] = Field(min_length=1)
+    title: str = Field(min_length=1)
+    training_type: str = Field(min_length=1)
+    start_time: datetime
+    end_time: datetime
+    location: str | None = None
+
+
+class TrainingResponse(BaseModel):
+    id: int
+    team_ids: list[int]
+    teams: list[TeamResponse]
+    title: str
+    training_type: str
+    location: str | None = None
+    start_time: datetime
+    end_time: datetime
