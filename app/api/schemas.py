@@ -133,3 +133,12 @@ class TeamTrainingsResponse(BaseModel):
     team_id: int
     team_name: str
     trainings: list[TrainingResponse]
+
+
+class TrainingUpdate(BaseModel):
+    team_ids: list[int] | None = None
+    title: str | None = None
+    training_type: str | None = None
+    start_time: datetime | None = None
+    end_time: datetime | None = None
+    location: str | None = None
