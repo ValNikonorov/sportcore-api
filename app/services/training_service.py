@@ -232,3 +232,21 @@ def update_training_by_id(
     session.refresh(training)
 
     return training
+
+
+def delete_training_by_id(
+    session: Session,
+    training_id: int,
+):
+    training = (
+        session.query(Training)
+        .filter(Training.id == training_id)
+        .first()
+    )
+
+    if not training:
+        return None
+
+    session.delete(training)
+    session.commit()
+    return training
