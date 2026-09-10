@@ -1,10 +1,12 @@
-from datetime import datetime
+from datetime import date, datetime, time, timedelta
 from sqlalchemy.orm import Session
 
 from app.models.training import Training
 from app.models.team import Team
 
 from app.services.team_service import serialize_team
+
+from datetime import date
 
 
 def get_overlapping_training(
@@ -250,3 +252,23 @@ def delete_training_by_id(
     session.delete(training)
     session.commit()
     return training
+
+
+def get_trainings_by_date(
+    session: Session,
+    training_date: date,
+):
+    day_start = datetime.combine(training_date, time.min)
+    next_day_start = day_start + timedelta(days=1)
+
+    day_schedule = (
+        session.query(Training)
+        .filter(
+            Training.start_time >= day_start,
+            Training.start_time < next_day_start,
+        )
+        .order_by(Training.start_time)
+        .all()
+    )
+
+    return day_schedule

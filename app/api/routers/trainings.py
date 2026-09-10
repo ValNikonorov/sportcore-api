@@ -4,9 +4,11 @@ from app.api.schemas import TrainingCreate, TrainingResponse, TeamTrainingsRespo
 
 from app.db import get_db
 
-from app.services.training_service import create_training, get_all_trainings, get_team_trainings, serialize_training, update_training_by_id, delete_training_by_id
+from app.services.training_service import create_training, get_all_trainings, get_team_trainings, serialize_training, update_training_by_id, delete_training_by_id, get_trainings_by_date
 
 from sqlalchemy.orm import Session
+
+from datetime import date
 
 router = APIRouter(prefix="/trainings", tags=["trainings"])
 
@@ -100,3 +102,13 @@ def delete_training_by_id_endpoint(training_id: int, db: Session = Depends(get_d
     return {
         "detail": "Training deleted"
     }
+
+
+@router.get("/by-date", response_model=list[TrainingResponse])
+def get_trainings_by_date_endpoint(training_date: date, db: Session = Depends(get_db)):
+    trainings = get_trainings_by_date(
+        session=db,
+        training_date=training_date
+    )
+
+    return [serialize_training(training) for training in trainings]
