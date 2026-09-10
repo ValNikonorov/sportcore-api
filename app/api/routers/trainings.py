@@ -4,7 +4,7 @@ from app.api.schemas import TrainingCreate, TrainingResponse, TeamTrainingsRespo
 
 from app.db import get_db
 
-from app.services.training_service import create_training, get_all_trainings, get_team_trainings, serialize_training, update_training_by_id
+from app.services.training_service import create_training, get_all_trainings, get_team_trainings, serialize_training, update_training_by_id, delete_training_by_id
 
 from sqlalchemy.orm import Session
 
@@ -85,3 +85,18 @@ def update_training_by_training_id(training_id: int, training: TrainingUpdate, d
             status_code=400, detail="Training location is already occupied at this time")
 
     return serialize_training(updated_training)
+
+
+@router.delete("/{training_id}")
+def delete_training_by_id_endpoint(training_id: int, db: Session = Depends(get_db)):
+    deleted_training = delete_training_by_id(
+        session=db,
+        training_id=training_id
+    )
+    if deleted_training is None:
+        raise HTTPException(
+            status_code=404, detail="Training not found")
+
+    return {
+        "detail": "Training deleted"
+    }
